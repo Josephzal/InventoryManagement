@@ -1,4 +1,4 @@
-//Joseph Lombardo 7/24/2020
+
 package application;
 
 import java.io.*;
@@ -50,10 +50,7 @@ public class ManageInventory extends Application {
 		launch(args);
 		
 		Scanner input = new Scanner(System.in);
-	
-		File objectFile = new File("inventory.dat");
-		int x = 0;
-		
+
 
 			
 	}
@@ -71,29 +68,22 @@ public class ManageInventory extends Application {
 			
 			try {
 				Connection conn = getConnection();
-				PreparedStatement create = conn.prepareStatement("CREATE TABLE IF NOT EXISTS items(id varchar(255), category varchar(255), name varchar(255), quantity int(255), value decimal(65), PRIMARY KEY(id))");
+				PreparedStatement create = conn.prepareStatement("CREATE TABLE IF NOT EXISTS items(category varchar(255), id varchar(255), name varchar(255), quantity int(255), value decimal(4,2), PRIMARY KEY(id))");
 				create.executeUpdate();
 			}catch(Exception e) {
 			System.out.println(e);
 			}
-			try {
-				Connection conn = getConnection();
-				PreparedStatement create = conn.prepareStatement("CREATE TABLE IF NOT EXISTS meat(id varchar(255), name varchar(255), quantity int(255), value decimal(65), PRIMARY KEY(id))");
-				create.executeUpdate();
-			}catch(Exception e) {
-			System.out.println(e);
-			}
+			connect("items", "category");
+			connect("meat", "");
+			connect("dairy", "");
+			connect("produce", "");
 			
+		}
+		
+		public static void connect(String type, String category) throws Exception{
 			try {
 				Connection conn = getConnection();
-				PreparedStatement create = conn.prepareStatement("CREATE TABLE IF NOT EXISTS produce(id varchar(255), name varchar(255), quantity int(255), value decimal(65), PRIMARY KEY(id))");
-				create.executeUpdate();
-			}catch(Exception e) {
-			}
-			
-			try {
-				Connection conn = getConnection();
-				PreparedStatement create = conn.prepareStatement("CREATE TABLE IF NOT EXISTS dairy(id varchar(255), name varchar(255), quantity int(255), value decimal(65), PRIMARY KEY(id))");
+				PreparedStatement create = conn.prepareStatement("CREATE TABLE IF NOT EXISTS " +type+ "("+category+"id varchar(255), name varchar(255), quantity int(255), value decimal(4,2), PRIMARY KEY(id))");
 				create.executeUpdate();
 			}catch(Exception e) {
 			System.out.println(e);
